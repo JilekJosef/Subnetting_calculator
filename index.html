@@ -2,99 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Subnetting calculator</title>
-    <script type="text/javascript">
-        let ipSiteLet = "192.168.1.0";
-        let pocetUzivateluSite = [];
-
-        window.onload = function start(){
-            let startIP = document.getElementById("submitIP");
-            startIP.onclick = function getIP(){
-                ipSiteLet = document.getElementById("ipSite").value;
-            }
-
-            let startPocet = document.getElementById("addPocet");
-            let i = 0;
-            startPocet.onclick = function getPocetUziv(){
-                pocetUzivateluSite[i] = document.getElementById("pocetUzivateluSite").value;
-                i++;
-            }
-            let start1Pocet = document.getElementById("clearPocet");
-            start1Pocet.onclick = function clearPocetUziv(){
-                pocetUzivateluSite = [];
-                i = 0;
-            }
-
-            let start = document.getElementById("start1");
-            start.onclick = function subnetting(){
-                let table = new Array(pocetUzivateluSite.length);
-                for (let i = 0; i < table.length; i++){
-                    table[i] = new Array(9);
-                }
-                for (let i = 0; i < table.length; i++){
-                    table[i][0] = "input "+(i+1);
-                    table[i][1] = pocetUzivateluSite[i];
-                }
-                let masky = [
-                    ["255.255.255.0", 24, 254],
-                    ["255.255.255.128", 25, 126],
-                    ["255.255.255.192", 26, 62],
-                    ["255.255.255.224", 27, 30],
-                    ["255.255.255.240", 28, 14],
-                    ["255.255.255.248", 29, 6],
-                    ["255.255.255.252", 30, 2]
-                ]
-                for (let i = 0; i < table.length; i++){
-                    for (let j = 0; j < masky.length; j++){
-                        if (masky[j][2] >= table[i][1]){
-                            table[i][6] = masky[j][0];
-                            table[i][7] = masky[j][1];
-                            table[i][8] = masky[j][2];
-                        }
-                    }
-                }
-                let ipSiteSplit = ipSiteLet.split(".");
-                let predchozi = 0;
-                for (let j = 0; j < masky.length; j++){
-                    for (let k = 0; k < table.length; k++){
-                        if (table[k][7] == masky[j][1]){
-                            table[k][2] = ipSiteSplit[0]+"."+ipSiteSplit[1]+"."+ipSiteSplit[2]+"."+(predchozi);
-                            table[k][3] = ipSiteSplit[0]+"."+ipSiteSplit[1]+"."+ipSiteSplit[2]+"."+(predchozi+1);
-                            predchozi = masky[j][2] + predchozi;
-                            table[k][4] = ipSiteSplit[0]+"."+ipSiteSplit[1]+"."+ipSiteSplit[2]+"."+(predchozi);
-                            table[k][5] = ipSiteSplit[0]+"."+ipSiteSplit[1]+"."+ipSiteSplit[2]+"."+(predchozi+1);
-                            predchozi += 2;
-                        }
-                    }
-
-                }
-                let out = "<table>";
-                let tableFirstLine = [
-                    ["Jmeno", "Počet hostu", "IP Sítě", "První IP", "Poslední IP", "Broadcast", "Maska", "Prefix", "Max počet hostu"],
-                ];
-                for (let i = 0; i < tableFirstLine.length; i++) {
-                    out = out + "<tr>";
-                    for (let j = 0; j < tableFirstLine[i].length; j++) {
-                        out = out + "<th>" + tableFirstLine[i][j] + "</th>";
-                    }
-                    out = out + "</tr>";
-                }
-                for (let i = 0; i < table.length; i++) {
-                    out = out + "<tr>";
-                    for (let j = 0; j < table[i].length; j++) {
-                        out = out + "<th>" + table[i][j] + "</th>";
-                    }
-                    out = out + "</tr>";
-                }
-                out = out + "</table>"
-                if (predchozi > 256){
-                    out = "Překročen počet hostu: 256 "
-                }
-                document.getElementById("outputTable").innerHTML = out;
-
-            }
-        }
-    </script>
+    <title>Azur Lane fleet builder</title>
     <style>
         form {
             position: relative;
@@ -203,26 +111,17 @@
         }
         input[type=text] {
             background-color: rgba(0, 0, 0, 0.09);
-            color: rgba(0, 0, 0, 1);
+            color: rgba(0, 0, 0, 0.09);
         }
     </style>
 </head>
 <body>
-    <div>
-        <label for="ipSite">IP Sítě:</label>
-        <input type="text" id="ipSite" name="ipSite" value="192.168.1.0" onfocus="(this.value == '192.168.1.0') && (this.value = '')" onblur="(this.value == '') && (this.value = '192.168.1.0')"/>
-        <input type="submit" value="Save IP" id="submitIP"/>
-        <div>
-            <label for="pocetUzivateluSite">Počet uživatelů sítě</label>
-            <input type="text" id="pocetUzivateluSite" name="pocetUzivateluSite" value=">1" onfocus="(this.value == '>1') && (this.value = '')" onblur="(this.value == '') && (this.value = '>0')"/>
-            <input type="submit" value="Clear" id="clearPocet"/>
-            <input type="submit" value="Add" id="addPocet"/>
+    <div id="centre">
+        <h1>Subnetting calculator</h1>
+        <br/>
+        <div class="sign">
+            <h1><a href="./subnetting.html">Subnetting class C</a></h1>
         </div>
-        <div>
-            <input type="submit" value="Start" id="start1"/>
-        </div>
-    </div>
-    <div id="outputTable">
     </div>
 </body>
 </html>
